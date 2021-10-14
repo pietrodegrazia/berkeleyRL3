@@ -122,7 +122,7 @@ O comando a seguir carrega seu `ValueIterationAgent`, que irá computar uma pol�
 
 *Avaliação:* Seu agente de iteração de valor será avaliado em um grid novo. Verificaremos seus valores, valores Q e políticas após números fixos de iterações e na convergência (por exemplo, após 100 iterações). 
 
-# Question 2: Análise da Travessia de Ponte
+# Questão 2: Análise da Travessia de Ponte
 
 `BridgeGrid` é um mapa em grade com um estado terminal de baixa recompensa e um estado terminal de alta recompensa separados por uma "ponte" estreita, em cada lado da qual há um abismo de recompensa altamente negativa. O agente começa próximo ao estado de baixa recompensa. Com o desconto padrão de 0,9 e o ruído padrão de 0,2, a política ótima não cruza a ponte. Altere apenas UM dos parâmetros de desconto e ruído para que a política ótima faça com que o agente tente cruzar a ponte. Coloque sua resposta em `question2 ()` de `analysis.py`. (O ruído se refere à frequência com que um agente termina em um estado de sucessor não intencional quando executa uma ação.) O padrão corresponde 
 
@@ -134,7 +134,7 @@ O comando a seguir carrega seu `ValueIterationAgent`, que irá computar uma pol�
 
 `python autograder.py -q q2`
 
-# Question 3: Políticas
+# Questão 3: Políticas
 
 Considere o layout `DiscountGrid`, mostrado abaixo. Este grid tem dois estados terminais com payoff positivo (na linha do meio), uma saída próxima com payoff +1 e uma saída distante com payoff +10. A linha inferior da grade consiste em estados terminais com retorno negativo (mostrado em vermelho); cada estado nesta região de "penhasco" tem retorno de -10. O estado inicial é o quadrado amarelo. Podemos distinguir entre dois tipos de caminhos: (1) caminhos que "arriscam o penhasco" e viajam perto da linha inferior da grade; esses caminhos são mais curtos, mas correm o risco de gerar um grande retorno negativo, e são representados pela seta vermelha na figura abaixo. (2) caminhos que "evitam o penhasco" e viajam ao longo da borda superior da grade. Esses caminhos são mais longos, mas têm menos probabilidade de gerar grandes resultados negativos. Esses caminhos são representados pela seta verde na figura abaixo. 
 
@@ -163,7 +163,7 @@ Cada método de `question3a()` até `question3e()` no `analysis.py`. deve retorn
 
 *Avaliação:* Verificaremos se a política desejada é retornada em cada caso. 
 
-# Question 4: Q-Learning
+# Questão 4: Q-Learning
 
 Observe que seu agente de iteração de valor não aprende realmente com a experiência. Em vez disso, ele considera seu modelo MDP para chegar a uma política completa antes de interagir com um ambiente real. Quando ele interage com o ambiente, ele simplesmente segue a política pré-computada (e.g. torna-se um agente reflexivo). Essa distinção pode ser sutil em um ambiente simulado como um Gridword, mas é muito importante no mundo real, onde o MDP real não está disponível.
 
@@ -186,7 +186,7 @@ Lembre-se de que `-k` controlará o número de episódios que seu agente aprende
 
 `python autograder.py -q q4`
 
-# Question 5: Epsilon Greedy
+# Questão 5: Epsilon Greedy
 
 Complete o seu agente Q-learning implementando a seleção de ação epsilon-greedy em `getAction`, o que significa que ele escolhe ações aleatórias em uma fração epsilon do tempo e segue seus melhores valores-Q atuais caso contrário. Observe que escolher uma ação aleatória pode resultar na escolha da melhor ação - ou seja, você não deve escolher uma ação aleatória somente entre as sub-ótimas, mas sim *qualquer* ação aleatória permitida. 
 
@@ -247,56 +247,54 @@ Observe que `PacmanQAgent` já está definido para você em termos do` QLearning
 
 `python pacman.py -p PacmanQAgent -n 10 -l smallGrid -a numTraining=10`
 
-During training, you will see output every 100 games with statistics about how Pacman is faring. Epsilon is positive during training, so Pacman will play poorly even after having learned a good policy: this is because he occasionally makes a random exploratory move into a ghost. As a benchmark, it should take between 1,000 and 1400 games before Pacman's rewards for a 100 episode segment becomes positive, reflecting that he's started winning more than losing. By the end of training, it should remain positive and be fairly high (between 100 and 350).
+Durante o treinamento, você verá a saída a cada 100 jogos com estatísticas sobre como o Pacman está se saindo. Epsilon é positivo durante o treinamento, então Pacman jogará mal mesmo depois de ter aprendido uma boa política: isso ocorre porque ele ocasionalmente faz um movimento exploratório aleatório pra cima de um fantasma. Como referência, deve demorar entre 1.000 e 1.400 jogos antes que as recompensas de Pacman por um segmento de 100 episódios se tornem positivas, refletindo que ele começou a ganhar mais do que perder. Ao final do treinamento, deve permanecer positivo e estar razoavelmente alto (entre 100 e 350).
 
-Make sure you understand what is happening here: the MDP state is the *exact* board configuration facing Pacman, with the now complex transitions describing an entire ply of change to that state. The intermediate game configurations in which Pacman has moved but the ghosts have not replied are *not* MDP states, but are bundled in to the transitions.
+Certifique-se de entender o que está acontecendo aqui: o estado do MDP é a configuração *exata* do mapa para o Pacman, com as transições agora complexas que descrevem um passo inteiro de mudança para esse estado. As configurações intermediárias do jogo nas quais o Pacman se moveu, mas os fantasmas não responderam, *não* são estados MDP, mas estão agrupados nas transições.
 
-Once Pacman is done training, he should win very reliably in test games (at least 90% of the time), since now he is exploiting his learned policy.
+Assim que o Pacman terminar de treinar, ele deve ganhar com muita segurança em jogos de teste (pelo menos 90% das vezes), já que agora ele está tirando proveito de sua política aprendida.
 
-However, you will find that training the same agent on the seemingly simple `mediumGrid` does not work well. In our implementation, Pacman's average training rewards remain negative throughout training. At test time, he plays badly, probably losing all of his test games. Training will also take a long time, despite its ineffectiveness.
+No entanto, você descobrirá que treinar o mesmo agente no aparentemente simples `mediumGrid` não funciona bem. Em nossa implementação, as recompensas médias de treinamento do Pacman permanecem negativas durante o treinamento. Na hora do teste, ele joga mal, provavelmente perdendo todos os seus jogos de teste. O treinamento também levará muito tempo, apesar de sua ineficácia.
 
-Pacman fails to win on larger layouts because each board configuration is a separate state with separate Q-values. He has no way to generalize that running into a ghost is bad for all positions. Obviously, this approach will not scale.
+Pacman não consegue vencer em layouts maiores porque cada configuração do mapa é um estado diferente com valores-Q diferentes. Ele não tem como generalizar que encontrar um fantasma é ruim para todas as posições. Obviamente, essa abordagem não vai escalar bem. 
 
+# Questão 8: Q-Learning aproximado
 
+Implemente um agente Q-learning aproximado que aprenda pesos para features de estados, onde muitos estados podem compartilhar as mesmos features. Escreva sua implementação na classe `ApproximateQAgent` em` qlearningAgents.py`, que é uma subclasse de `PacmanQAgent`.
 
-# Question 8: Approximate Q-Learning
+*Nota:* Q-learning aproximado supõe a existência de uma função de características (features) `f(s, a)` sobre pares de estado e ação, que produz um vetor f_1 (s, a) ... f_i (s, a) ... f_n (s, a) de valores de features. Fornecemos funções de features para você em `featureExtractors.py`. Os vetores de features são objetos `util.Counter` (como um dicionário) contendo os pares de features e valores diferentes de zero; todas as features omitidas têm valor zero. 
 
-Implement an approximate Q-learning agent that learns weights for features of states, where many states might share the same features. Write your implementation in `ApproximateQAgent` class in `qlearningAgents.py`, which is a subclass of `PacmanQAgent`.
-
-*Note:* Approximate Q-learning assumes the existence of a feature function f(s,a) over state and action pairs, which yields a vector f_1(s,a) ... f_i(s,a) ... f_n(s,a) of feature values. We provide feature functions for you in `featureExtractors.py`. Feature vectors are `util.Counter` (like a dictionary) objects containing the non-zero pairs of features and values; all omitted features have value zero.
-
-The approximate Q-function takes the following form
+A função-Q aproximada tem a seguinte forma: 
 
 Q(s,a) = ∑ f_i(s,a) w_i
 
- where each weight w_i is associated with a particular feature f_i(s,a). In your code, you should implement the weight vector as a dictionary mapping features (which the feature extractors will return) to weight values. You will update your weight vectors similarly to how you updated Q-values:
+onde cada peso w_i está associado a uma feature particular f_i(s, a). Em seu código, você deve implementar o vetor de pesos com um dicionário mapeando features (que os extratores de feature retornarão) para valores de peso. Você atualizará seus vetores de peso de maneira similar à qual atualizou os valores Q: 
 
 δ = r + γ max Q(s', a') - Q(s,a)
 
 w_i ← w_i + α . δ . f_i(s,a)
 
 
-Note that the δ term is the same as in normal Q-learning, and r is the experienced reward.
+Observe que o termo δ é o mesmo que no Q-learning normal e r é a recompensa experimentada.
 
-By default, `ApproximateQAgent` uses the `IdentityExtractor`, which assigns a single feature to every `(state,action)` pair. With this feature extractor, your approximate Q-learning agent should work identically to `PacmanQAgent`. You can test this with the following command:
+Por padrão, `ApproximateQAgent` usa o` IdentityExtractor`, que atribui uma feature única para cada par `(estado, ação)`. Com este extrator de features, seu agente Q-learning aproximado deve funcionar de forma idêntica ao `PacmanQAgent`. Você pode testar isso com o seguinte comando:
 
-`python pacman.py -p ApproximateQAgent -x 2000 -n 2010 -l smallGrid `
+`python pacman.py -p ApproximateQAgent -x 2000 -n 2010 -l smallGrid`
 
-*Important:*`ApproximateQAgent` is a subclass of `QLearningAgent`, and it therefore shares several methods like `getAction`. Make sure that your methods in `QLearningAgent` call `getQValue` instead of accessing Q-values directly, so that when you override `getQValue` in your approximate agent, the new approximate q-values are used to compute actions.
+Importante:* `ApproximateQAgent` é uma subclasse de` QLearningAgent` e, portanto, compartilha vários métodos como `getAction`. Certifique-se de que seus métodos em `QLearningAgent` chamam` getQValue` em vez de acessar os valores-Q diretamente, de modo que quando você substituir `getQValue` em seu agente aproximado, os novos valores-q aproximados sejam usados para calcular ações.
 
-Once you're confident that your approximate learner works correctly with the identity features, run your approximate Q-learning agent with our custom feature extractor, which can learn to win with ease:
+Quando você tiver certeza de que seu aprendiz aproximado funciona corretamente com os features-identidade, execute seu agente Q-learning aproximado com nosso extrator de recurso personalizado, que pode aprender a vencer com facilidade: 
 
 `python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumGrid `
 
-Even much larger layouts should be no problem for your `ApproximateQAgent`. (*warning*: this may take a few minutes to train)
+Mesmo layouts muito maiores não devem ser problema para o seu `ApproximateQAgent`. (*aviso*: isso pode levar alguns minutos para treinar) 
 
 `python pacman.py -p ApproximateQAgent -a extractor=SimpleExtractor -x 50 -n 60 -l mediumClassic `
 
-If you have no errors, your approximate Q-learning agent should win almost every time with these simple features, even with only 50 training games.
+Se você não tiver erros, seu agente Q-learning aproximado deve ganhar quase todas as vezes com essas features simples, mesmo com apenas 50 jogos de treinamento.
 
-*Grading:* We will run your approximate Q-learning agent and check that it learns the same Q-values and feature weights as our reference implementation when each is presented with the same set of examples. To grade your implementation, run the autograder:
+*Avaliação:* Executaremos seu agente Q-learning aproximado e verificaremos se ele aprende os mesmos valores-Q e pesos de features de nossa implementação de referência quando cada um é apresentado com o mesmo conjunto de exemplos. Para avaliar sua implementação, execute o autograder: 
 
 `python autograder.py -q q8`
 
-*Congratulations! You have a learning Pacman agent!*
+*Parabéns! Você tem um agente que aprende Pacman!*
 
