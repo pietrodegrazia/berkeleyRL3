@@ -1,247 +1,249 @@
 # berkeleyRL3
-Python 3 port of the Berkeley Reinforcement Learning assignment. Original material, written in Python 2, is at http://ai.berkeley.edu/reinforcement.html.
+Port para Python 3 do exercício de Aprendizado por Reforço de Berkeley. O material original, escrito em Python 2, está em http://ai.berkeley.edu/reinforcement.html.
 
-The code has been ported from python 2 to 3 with the 2to3 utilitary and some manual tweaks involving tk and integer division. Preliminary manual tests were ok, but some issues might still be there. Feedback and pull requests are welcome!
+O código foi portado do python 2 para 3 com o utilitário 2to3 e alguns ajustes manuais envolvendo tk e divisão inteira. Os testes manuais preliminares correram bem, mas alguns problemas ainda podem estar lá. Feedback e pull requests são bem-vindos! 
 
-# Introduction
+# Introdução
 
-In this project, you will implement value iteration and Q-learning. You will test your agents first on Gridworld (from class), then apply them to a simulated robot controller (Crawler) and Pacman.
+Neste projeto, você implementará iteração de valor e Q-learning. Você irá testar seus agentes primeiro no Gridworld (da aula) e, em seguida, aplicá-los a um controlador de robô simulado (Crawler) e Pacman.
 
-This project includes an autograder for you to grade your solutions on your machine. This can be run on all questions with the command:
+Este projeto inclui um autograder para você verificar suas soluções em sua máquina. Ele pode ser executado em todas as questões com o comando: 
 
 `python autograder.py`
 
-It can be run for one particular question, such as q2, by:
+Ele pode ser executado para uma questão em particular, como a q2, com:
 
 `python autograder.py -q q2`
 
-It can be run for one particular test by commands of the form:
+Ele pode ser executado para um teste em particular com comandos com a seguinte forma:
 
 `python autograder.py -t test_cases/q2/1-bridge-grid`
 
-See the autograder tutorial in Project 0 (http://ai.berkeley.edu/tutorial.html) for more information about using the autograder.
+Consulte o tutorial do autograder no Projeto 0 (http://ai.berkeley.edu/tutorial.html) para obter mais informações sobre como usar o autograder.
 
-The code for this project contains the following files:
+O código para este projeto contém os seguintes arquivos: 
 
-**Files you'll edit:**
+**Arquivos que você vai editar:**
 
-* valueIterationAgents.py: A value iteration agent for solving known MDPs.
-* qlearningAgents.py: Q-learning agents for Gridworld, Crawler and Pacman.
-* analysis.py: A file to put your answers to questions given in the project.
+* valueIterationAgents.py: um agente de iteração de valor para resolver MDPs conhecidos.
+* qlearningAgents.py: agentes Q-learning para o Gridworld, Crawler e Pacman.
+* analysis.py: um arquivo para preencher com suas respostas às perguntas deste projeto.
 
-**Files you should read but NOT edit:**
-* mdp.py 	Defines methods on general MDPs.
-* learningAgents.py 	Defines the base classes ValueEstimationAgent and QLearningAgent, which your agents will extend.
-* util.py 	Utilities, including util.Counter, which is particularly useful for Q-learners.
-* gridworld.py 	The Gridworld implementation.
-* featureExtractors.py 	Classes for extracting features on (state,action) pairs. Used for the approximate Q-learning agent (in qlearningAgents.py).
+**Arquivos que você deve ler, mas NÃO editar:**
+* mdp.py   Define métodos gerais de MDPs.
+* learningAgents.py   Define as classes base ValueEstimationAgent e QLearningAgent, que seus agentes irão estender.
+* util.py   Utilitários, incluindo util.Counter, que é particularmente útil para Q-learners.
+* gridworld.py   A implementação do Gridworld.
+* featureExtractors.py   Classes para extrair recursos em pares (estado, ação). Usado para o agente Q-learning aproximado (em qlearningAgents.py). 
 
-**Files you can ignore:**
-* environment.py: Abstract class for general reinforcement learning environments. Used by gridworld.py.
-* graphicsGridworldDisplay.py: Gridworld graphical display.
-* graphicsUtils.py: Graphics utilities.
-* textGridworldDisplay.py: Plug-in for the Gridworld text interface.
-* crawler.py: The crawler code and test harness. You will run this but not edit it.
-* graphicsCrawlerDisplay.py: GUI for the crawler robot.
-* autograder.py: Project autograder
-* testParser.py: Parses autograder test and solution files
-* testClasses.py: General autograding test classes
-* test_cases/     Directory containing the test cases for each question
-* reinforcementTestClasses.py: Project 3 specific autograding test classes
+**Arquivos que você pode ignorar:**
 
-**Files to Edit and Submit:** You will fill in portions of valueIterationAgents.py, qlearningAgents.py, and analysis.py during the assignment. You should submit these files with your code and comments. Please do not change the other files in this distribution or submit any of our original files other than these files.
+* environment.py: Classe abstrata para ambientes gerais de aprendizagem por reforço. Usado por gridworld.py.
+* graphicsGridworldDisplay.py: Exibição gráfica do Gridworld.
+* graphicsUtils.py: utilitários gráficos.
+* textGridworldDisplay.py: Plug-in para a interface de texto Gridworld.
+* crawler.py: O código do crawler e o artefatos de teste. Você vai executá-lo, mas não vai editá-lo.
+* graphicsCrawlerDisplay.py: GUI para o robô rastreador.
+* autograder.py: autograder do projeto.
+* testParser.py: Parser de arquivos de solução e testes do autograder
+* testClasses.py: Classes de teste gerais de autocorreção (autograding) 
+* test_cases/: diretório contendo os casos de teste para cada questão
+* reforcementTestClasses.py: Classes de teste de autograding específicas do Projeto 3 
 
-**Evaluation:** Your code will be autograded for technical correctness. Please do not change the names of any provided functions or classes within the code, or you will wreak havoc on the autograder. However, the correctness of your implementation -- not the autograder's judgements -- will be the final judge of your score. If necessary, we will review and grade assignments individually to ensure that you receive due credit for your work.
 
-**Academic Dishonesty:** We will be checking your code against other submissions in the class for logical redundancy. If you copy someone else's code and submit it with minor changes, we will know. These cheat detectors are quite hard to fool, so please don't try. We trust you all to submit your own work only; please don't let us down. If you do, we will pursue the strongest consequences available to us.
+**Arquivos para editar e enviar:** Você preencherá partes de valueIterationAgents.py, qlearningAgents.py e analysis.py durante o exercício. Você deve enviar esses arquivos com seu código e comentários. Não altere os outros arquivos nesta distribuição nem envie qualquer um de nossos arquivos originais que não sejam esses arquivos. 
 
-**Getting Help:** You are not alone! If you find yourself stuck on something, contact the course staff for help. Office hours, section, and the discussion forum are there for your support; please use them. If you can't make our office hours, let us know and we will schedule more. We want these projects to be rewarding and instructional, not frustrating and demoralizing. But, we don't know when or how to help unless you ask.
+**Avaliação:** o autograder será executado no seu código para correção técnica. Não altere os nomes de quaisquer funções ou classes fornecidas dentro do código, ou você causará estragos no autograder. No entanto, a corretude de sua implementação - não os julgamentos do autograder - será o juiz final de sua pontuação. Se necessário, revisaremos e avaliaremos os envios individualmente para garantir que você receba o devido crédito pelo seu trabalho. 
 
-**Discussion:** Please be careful not to post spoilers.
+**Desonestidade Acadêmica:** iremos comparar seu código com outros envios para verificação de plágio. Nós descobriremos se você copiar o código de outra pessoa e enviá-lo com pequenas alterações. Os detectores de plágio são muito difíceis de enganar, então, por favor, não tente. Confiamos que todos vocês enviarão apenas seus próprios trabalhos; por favor, não nos decepcione. Se você fizer isso, buscaremos as consequências mais sérias que pudermos.
+
+**Conseguindo ajuda:** Você não está sozinho(a)! Se você empacar em algo, entre em contato com a equipe do curso para obter ajuda. O discord, o fórum de discussão e demais recursos existem para sua ajuda; por favor, use-os. Caso não precise de atendimento ao vivo, avise-nos e agendaremos. Queremos que esses projetos sejam gratificantes e instrutivos, não frustrantes e desmoralizantes. Mas não saberemos quando ou como ajudar, a menos que você peça. 
+
+**Discussão:** Por favor tome cuidado para não postar spoilers (trechos de código com a solução).
 
 # MDPs
 
-To get started, run Gridworld in manual control mode, which uses the arrow keys:
+Para começar, execute o Gridworld no modo de controle manual, que usa as teclas de seta: 
 
 `python gridworld.py -m`
 
-You will see the two-exit layout from class. The blue dot is the agent. Note that when you press up, the agent only actually moves north 80% of the time. Such is the life of a Gridworld agent!
+Você verá o layout da aula com duas saídas. O ponto azul é o agente. Observe que quando você pressiona para cima, o agente só se move para o norte 80% do tempo. Assim é a vida de um agente do Gridworld!
 
-You can control many aspects of the simulation. A full list of options is available by running:
+Você pode controlar muitos aspectos da simulação. Uma lista completa de opções está disponível executando: 
 
 `python gridworld.py -h`
 
-The default agent moves randomly
+O agente default se move aleatoriamente:
 
 `python gridworld.py -g MazeGrid`
 
-You should see the random agent bounce around the grid until it happens upon an exit. Not the finest hour for an AI agent.
+Você deve ver o agente aleatório se batendo pelo grid até que aconteça de achar uma saída. Essa é uma vida ruim para um agente de IA.
 
-*Note:* The Gridworld MDP is such that you first must enter a pre-terminal state (the double boxes shown in the GUI) and then take the special 'exit' action before the episode actually ends (in the true terminal state called TERMINAL_STATE, which is not shown in the GUI). If you run an episode manually, your total return may be less than you expected, due to the discount rate (-d to change; 0.9 by default).
+*Nota:* O MDP do Gridworld é tal que você deve primeiro entrar em um estado pré-terminal (as caixas duplas mostradas na GUI) e então realizar a ação especial de sair ('exit') antes que o episódio realmente termine (no verdadeiro estado do terminal chamado TERMINAL_STATE, que não é mostrado na GUI). Se você executar um episódio manualmente, seu retorno total pode ser menor do que o esperado, devido à taxa de desconto (-d para alterar; 0,9 por padrão).
 
-Look at the console output that accompanies the graphical output (or use -t for all text). You will be told about each transition the agent experiences (to turn this off, use -q).
+Observe a saída do console que acompanha a saída gráfica (ou use -t para tudo em texto). Você será informado sobre cada transição que o agente experimenta (para desligar, use -q).
 
-As in Pacman, positions are represented by (x,y) Cartesian coordinates and any arrays are indexed by [x][y], with 'north' being the direction of increasing y, etc. By default, most transitions will receive a reward of zero, though you can change this with the living reward option (-r).
+Como no Pacman, as posições são representadas por coordenadas cartesianas (x,y) e quaisquer matrizes são indexadas por [x][y], com 'norte' sendo a direção de aumento de y, etc. Por padrão, a maioria das transições receberá uma recompensa de zero, embora você possa alterar isso com a opção de recompensa por viver (-r). 
 
-# Question 1: Value Iteration
+# Questão 1: Iteração de Valor
 
-Write a value iteration agent in`ValueIterationAgent`, which has been partially specified for you in `valueIterationAgents.py`. Your value iteration agent is an offline planner, not a reinforcement learning agent, and so the relevant training option is the number of iterations of value iteration it should run (option -i) in its initial planning phase. ValueIterationAgent takes an MDP on construction and runs value iteration for the specified number of iterations before the constructor returns.
+Escreva um agente de iteração de valor em `ValueIterationAgent`, que foi parcialmente especificado para você em `valueIterationAgents.py`. Seu agente de iteração de valor é um planejador offline, não um agente de aprendizado por reforço e, portanto, a opção de treinamento relevante é o número de iterações do algoritmo de iteração de valor que ele deve executar (opção -i) em sua fase de planejamento inicial. `ValueIterationAgent` usa um MDP na construtora e executa a iteração de valor para o número especificado de iterações antes de retornar.
 
-Value iteration computes k-step estimates of the optimal values, V_k. In addition to running value iteration, implement the following methods for ValueIterationAgent using V_k.
+A iteração de valor calcula estimativas de k passos dos valores ótimos, V_k. Além de executar a iteração de valor, implemente os seguintes métodos para `ValueIterationAgent` usando V_k. 
 
-* `computeActionFromValues(state)` computes the best action according to the value function given by self.values.
-* `computeQValueFromValues(state, action)` returns the Q-value of the (state, action) pair given by the value function given by self.values.
+* `computeActionFromValues(state)` calcula a melhor ação de acordo com a função de valor fornecida por `self.values`. 
+* `computeQValueFromValues(state, action)` retorna o valor-Q do par (estado, ação) dado pela função de valor em `self.values`. 
 
-These quantities are all displayed in the GUI: values are numbers in squares, Q-values are numbers in square quarters, and policies are arrows out from each square.
+Essas quantidades são todas exibidas na GUI: os valores são números nos quadrados, os valores-Q são números nos triângulos (um para cada ação) e a política são as setas em cada quadrado. 
 
-*Important:* Use the "batch" version of value iteration where each vector V_k is computed from a fixed vector V_{k-1} (like in lecture), not the "online" version where one single weight vector is updated in place. This means that when a state's value is updated in iteration k based on the values of its successor states, the successor state values used in the value update computation should be those from iteration k-1 (even if some of the successor states had already been updated in iteration k). The difference is discussed in Sutton & Barto in the 6th paragraph of chapter 4.1.
+*Importante:* Use a versão em "batch" da iteração de valor, onde cada vetor V_k é calculado a partir de um vetor fixo V_{k-1} (como na aula), não a versão "online" onde um único vetor de pesos é atualizado "in place". Isso significa que quando o valor de um estado é atualizado na iteração k com base nos valores de seus estados sucessores, os valores dos sucessores usados no cálculo devem ser aqueles da iteração k-1 (mesmo se alguns dos estados sucessores já tivessem sido atualizado na iteração k). A diferença é discutida em Sutton & Barto no 6º parágrafo do capítulo 4.1. 
 
-*Note:* A policy synthesized from values of depth k (which reflect the next k rewards) will actually reflect the next k+1 rewards (i.e. you return π_{k+1}). Similarly, the Q-values will also reflect one more reward than the values (i.e. you return Q_{k+1}).
+*Observação:* Uma política sintetizada a partir de valores em profundidade k (que refletem as próximas k recompensas) refletirá na verdade as próximas k + 1 recompensas (ou seja, você retorna π_{k+1}). Da mesma forma, os valores Q também refletirão uma recompensa a mais do que os valores (ou seja, você retorna Q_{k+1}).
 
-You should return the synthesized policy π_{k+1}.
+Você deve retornar a política sintetizada π_{k+1}.
 
-*Hint:* Use the `util.Counter` class in `util.py`, which is a dictionary with a default value of zero. Methods such as `totalCount` should simplify your code. However, be careful with `argMax`: the actual argmax you want may be a key not in the counter!
+*Dica:* Use a classe `util.Counter` em` util.py`, que é um dicionário com valor padrão zero. Métodos como `totalCount` devem simplificar seu código. No entanto, tome cuidado com `argMax`: o argmax real que você deseja pode ser uma chave que não está no contador!
 
-Note: Make sure to handle the case when a state has no available actions in an MDP (think about what this means for future rewards).
+*Nota:* Certifique-se de lidar com o caso no qual um estado não tem ações disponíveis em um MDP (pense no que isso significa para recompensas futuras).
 
-To test your implementation, run the autograder:
+Para testar sua implementação, execute o autograder: 
 
 `python autograder.py -q q1`
 
-The following command loads your `ValueIterationAgent`, which will compute a policy and execute it 10 times. Press a key to cycle through values, Q-values, and the simulation. You should find that the value of the start state (V(start), which you can read off of the GUI) and the empirical resulting average reward (printed after the 10 rounds of execution finish) are quite close.
+O comando a seguir carrega seu `ValueIterationAgent`, que irá computar uma política e executá-la 10 vezes. Pressione uma tecla para percorrer os valores, valores-Q e a simulação. Você deve descobrir que o valor do estado inicial (V(início), que pode ser lido na GUI) e a recompensa média resultante empírica (impressa após o término das 10 rodadas de execução) são bastante próximos. 
 
 `python gridworld.py -a value -i 100 -k 10`
 
-*Hint:* On the default BookGrid, running value iteration for 5 iterations should give you this output:
+*Dica:* No BookGrid padrão, a iteração de valor em execução para 5 iterações deve fornecer esta saída: 
 
 `python gridworld.py -a value -i 5`
 
 ![image](https://user-images.githubusercontent.com/5452322/115279534-3d547200-a11d-11eb-8a57-78de87c17847.png)
 
-*Grading:* Your value iteration agent will be graded on a new grid. We will check your values, Q-values, and policies after fixed numbers of iterations and at convergence (e.g. after 100 iterations).
+*Avaliação:* Seu agente de iteração de valor será avaliado em um grid novo. Verificaremos seus valores, valores Q e políticas após números fixos de iterações e na convergência (por exemplo, após 100 iterações). 
 
-# Question 2: Bridge Crossing Analysis
+# Question 2: Análise da Travessia de Ponte
 
-`BridgeGrid` is a grid world map with the a low-reward terminal state and a high-reward terminal state separated by a narrow "bridge", on either side of which is a chasm of high negative reward. The agent starts near the low-reward state. With the default discount of 0.9 and the default noise of 0.2, the optimal policy does not cross the bridge. Change only ONE of the discount and noise parameters so that the optimal policy causes the agent to attempt to cross the bridge. Put your answer in `question2()` of `analysis.py`. (Noise refers to how often an agent ends up in an unintended successor state when they perform an action.) The default corresponds to:
+`BridgeGrid` é um mapa em grade com um estado terminal de baixa recompensa e um estado terminal de alta recompensa separados por uma "ponte" estreita, em cada lado da qual há um abismo de recompensa altamente negativa. O agente começa próximo ao estado de baixa recompensa. Com o desconto padrão de 0,9 e o ruído padrão de 0,2, a política ótima não cruza a ponte. Altere apenas UM dos parâmetros de desconto e ruído para que a política ótima faça com que o agente tente cruzar a ponte. Coloque sua resposta em `question2 ()` de `analysis.py`. (O ruído se refere à frequência com que um agente termina em um estado de sucessor não intencional quando executa uma ação.) O padrão corresponde 
 
 `python gridworld.py -a value -i 100 -g BridgeGrid --discount 0.9 --noise 0.2`
 
 ![image](https://user-images.githubusercontent.com/5452322/115284686-5eb85c80-a123-11eb-8de7-f79e3433cbe5.png)
 
-*Grading:* We will check that you only changed one of the given parameters, and that with this change, a correct value iteration agent should cross the bridge. To check your answer, run the autograder:
+*Avaliação:* Verificaremos se você alterou apenas um dos parâmetros fornecidos e, com essa alteração, um agente de iteração de valor correto deve cruzar a ponte. Para verificar sua resposta, execute o autograder: 
 
 `python autograder.py -q q2`
 
-# Question 3: Policies
+# Question 3: Políticas
 
-Consider the `DiscountGrid` layout, shown below. This grid has two terminal states with positive payoff (in the middle row), a close exit with payoff +1 and a distant exit with payoff +10. The bottom row of the grid consists of terminal states with negative payoff (shown in red); each state in this "cliff" region has payoff -10. The starting state is the yellow square. We distinguish between two types of paths: (1) paths that "risk the cliff" and travel near the bottom row of the grid; these paths are shorter but risk earning a large negative payoff, and are represented by the red arrow in the figure below. (2) paths that "avoid the cliff" and travel along the top edge of the grid. These paths are longer but are less likely to incur huge negative payoffs. These paths are represented by the green arrow in the figure below.
+Considere o layout `DiscountGrid`, mostrado abaixo. Este grid tem dois estados terminais com payoff positivo (na linha do meio), uma saída próxima com payoff +1 e uma saída distante com payoff +10. A linha inferior da grade consiste em estados terminais com retorno negativo (mostrado em vermelho); cada estado nesta região de "penhasco" tem retorno de -10. O estado inicial é o quadrado amarelo. Podemos distinguir entre dois tipos de caminhos: (1) caminhos que "arriscam o penhasco" e viajam perto da linha inferior da grade; esses caminhos são mais curtos, mas correm o risco de gerar um grande retorno negativo, e são representados pela seta vermelha na figura abaixo. (2) caminhos que "evitam o penhasco" e viajam ao longo da borda superior da grade. Esses caminhos são mais longos, mas têm menos probabilidade de gerar grandes resultados negativos. Esses caminhos são representados pela seta verde na figura abaixo. 
 
 ![image](https://user-images.githubusercontent.com/5452322/115284813-89a2b080-a123-11eb-8af6-5d4cf2da4f71.png)
 
 
-In this question, you will choose settings of the discount, noise, and living reward parameters for this MDP to produce optimal policies of several different types. Your setting of the parameter values for each part should have the property that, if your agent followed its optimal policy without being subject to any noise, it would exhibit the given behavior. If a particular behavior is not achieved for any setting of the parameters, assert that the policy is impossible by returning the string `'NOT POSSIBLE'.`
+Nesta questão, você escolherá as configurações dos parâmetros de desconto, ruído e recompensa vitalícia para este MDP para produzir políticas ideais de vários tipos diferentes. Sua configuração dos valores dos parâmetros para cada parte deve ter a propriedade de que, se o seu agente seguisse sua política ótima sem estar sujeito a nenhum ruído, ele exibiria o comportamento dado. Se um determinado comportamento não for alcançado para qualquer configuração dos parâmetros, afirme que a política é impossível retornando a string `'NOT POSSIBLE' (em inglês mesmo).
 
-Here are the optimal policy types you should attempt to produce:
+Aqui estão os tipos de política ideais que você deve tentar produzir:
 
-* Prefer the close exit (+1), risking the cliff (-10)
-* Prefer the close exit (+1), but avoiding the cliff (-10)
-* Prefer the distant exit (+10), risking the cliff (-10)
-* Prefer the distant exit (+10), avoiding the cliff (-10)
-* Avoid both exits and the cliff (so an episode should never terminate)
+* Prefira a saída próxima (+1), arriscando o penhasco (-10)
+* Prefira a saída próxima (+1), mas evitando o penhasco (-10)
+* Prefira a saída distante (+10), arriscando o penhasco (-10)
+* Prefira a saída distante (+10), evitando o penhasco (-10)
+* Evite as saídas e o penhasco (portanto, um episódio nunca deve terminar)
 
-To check your answers, run the autograder:
+Para verificar suas respostas, execute o autograder: 
 
 `python autograder.py -q q3`
 
-`question3a()` through `question3e()` should each return a 3-item tuple of (discount, noise, living reward) in `analysis.py`.
+Cada método de `question3a()` até `question3e()` no `analysis.py`. deve retornar uma tupla de 3 itens (desconto, ruído, recompensa por viver). 
 
-*Note:* You can check your policies in the GUI. For example, using a correct answer to 3(a), the arrow in (0,1) should point east, the arrow in (1,1) should also point east, and the arrow in (2,1) should point north.
+*Observação:* Você pode verificar suas políticas na GUI. Por exemplo, usando uma resposta correta para 3 (a), a seta em (0,1) deve apontar para o leste, a seta em (1,1) também deve apontar para o leste, e a seta em (2,1) deve apontar para o norte .
 
-*Note:* On some machines you may not see an arrow. In this case, press a button on the keyboard to switch to qValue display, and mentally calculate the policy by taking the arg max of the available qValues for each state.
+*Observação:* Em algumas máquinas, você pode não ver uma seta. Nesse caso, pressione um botão no teclado para alternar para a exibição de valor-Q e calcule mentalmente a política tomando o argmax dos valores-Q disponíveis para cada estado.
 
-*Grading:* We will check that the desired policy is returned in each case.
+*Avaliação:* Verificaremos se a política desejada é retornada em cada caso. 
 
 # Question 4: Q-Learning
 
-Note that your value iteration agent does not actually learn from experience. Rather, it ponders its MDP model to arrive at a complete policy before ever interacting with a real environment. When it does interact with the environment, it simply follows the precomputed policy (e.g. it becomes a reflex agent). This distinction may be subtle in a simulated environment like a Gridword, but it's very important in the real world, where the real MDP is not available.
+Observe que seu agente de iteração de valor não aprende realmente com a experiência. Em vez disso, ele considera seu modelo MDP para chegar a uma política completa antes de interagir com um ambiente real. Quando ele interage com o ambiente, ele simplesmente segue a política pré-computada (e.g. torna-se um agente reflexivo). Essa distinção pode ser sutil em um ambiente simulado como um Gridword, mas é muito importante no mundo real, onde o MDP real não está disponível.
 
-You will now write a Q-learning agent, which does very little on construction, but instead learns by trial and error from interactions with the environment through its `update(state, action, nextState, reward)` method. A stub of a Q-learner is specified in `QLearningAgent` in `qlearningAgents.py`, and you can select it with the option '-a q'. For this question, you must implement the `update`, `computeValueFromQValues`, `getQValue`, and `computeActionFromQValues` methods.
+Agora você escreverá um agente Q-learning, que faz muito pouco na construtora, mas aprende por tentativa e erro a partir de interações com o ambiente por meio de seu método `update (state, action, nextState, recompensa)`. Um esboço de um Q-learner é especificado em `QLearningAgent` em` qlearningAgents.py`, e você pode selecioná-lo com a opção '-a q'. Para esta questão, você deve implementar os métodos `update`,` computeValueFromQValues`, `getQValue` e` computeActionFromQValues`. 
 
-*Note:* For `computeActionFromQValues`, you should break ties randomly for better behavior. The `random.choice()` function will help. In a particular state, actions that your agent hasn't seen before still have a Q-value, specifically a Q-value of zero, and if all of the actions that your agent has seen before have a negative Q-value, an unseen action may be optimal.
+*Nota:* Para `computeActionFromQValues`, você deve quebrar empates aleatoriamente para um melhor comportamento. A função `random.choice()` ajudará. Em um determinado estado, mesmo as ações que seu agente não viu antes têm um valor-Q, especificamente um valor-Q de zero, e se todas as ações que seu agente viu antes tiverem um valor-Q negativo, a ação não vista pode ser ótima.
 
-*Important:* Make sure that in your `computeValueFromQValues` and `computeActionFromQValues` functions, you only access Q values by calling `getQValue`. This abstraction will be useful for question 8 when you override `getQValue` to use features of state-action pairs rather than state-action pairs directly.
+*Importante:* Certifique-se de que em suas funções `computeValueFromQValues` e` computeActionFromQValues`, você só acessa valores-Q chamando `getQValue`. Esta abstração será útil para a questão 8 quando você sobrescrever `getQValue` para usar features dos pares estado-ação ao invés dos pares estado-ação diretamente.
 
-With the Q-learning update in place, you can watch your Q-learner learn under manual control, using the keyboard:
+Com a atualização do Q-learning implementada, você pode assistir ao seu Q-learner aprender sob controle manual, usando o teclado: 
 
 `python gridworld.py -a q -k 5 -m`
 
-Recall that -k will control the number of episodes your agent gets to learn. Watch how the agent learns about the state it was just in, not the one it moves to, and "leaves learning in its wake." Hint: to help with debugging, you can turn off noise by using the `--noise 0.0` parameter (though this obviously makes Q-learning less interesting). If you manually steer Pacman north and then east along the optimal path for four episodes, you should see the following Q-values:
+Lembre-se de que `-k` controlará o número de episódios que seu agente aprenderá. Observe como o agente aprende sobre o estado em que estava, não aquele para o qual se move, e "deixa o aprendizado por onde passar". Dica: para ajudar na depuração, você pode desligar o ruído usando o parâmetro `--noise 0.0` (embora isso obviamente torne o Q-learning menos interessante). Se você direcionar o Pacman manualmente para o norte e depois para o leste ao longo do caminho ótimo para quatro episódios, deverá ver os seguintes valores Q: 
 
 ![image](https://user-images.githubusercontent.com/5452322/115285640-7cd28c80-a124-11eb-978a-74e6c3dfe9a5.png)
 
 
-Grading: We will run your Q-learning agent and check that it learns the same Q-values and policy as our reference implementation when each is presented with the same set of examples. To grade your implementation, run the autograder:
+*Avaliação:* executaremos seu agente Q-learning e verificaremos se ele aprende os mesmos valores-Q e política de nossa implementação de referência quando cada um é apresentado com o mesmo conjunto de exemplos. Para avaliar sua implementação, execute o autograder: 
 
 `python autograder.py -q q4`
 
 # Question 5: Epsilon Greedy
 
-Complete your Q-learning agent by implementing epsilon-greedy action selection in `getAction`, meaning it chooses random actions an epsilon fraction of the time, and follows its current best Q-values otherwise. Note that choosing a random action may result in choosing the best action - that is, you should not choose a random sub-optimal action, but rather *any* random legal action.
+Complete o seu agente Q-learning implementando a seleção de ação epsilon-greedy em `getAction`, o que significa que ele escolhe ações aleatórias em uma fração epsilon do tempo e segue seus melhores valores-Q atuais caso contrário. Observe que escolher uma ação aleatória pode resultar na escolha da melhor ação - ou seja, você não deve escolher uma ação aleatória somente entre as sub-ótimas, mas sim *qualquer* ação aleatória permitida. 
 
 `python gridworld.py -a q -k 100 `
 
-Your final Q-values should resemble those of your value iteration agent, especially along well-traveled paths. However, your average returns will be lower than the Q-values predict because of the random actions and the initial learning phase.
+Seus valores-Q finais devem ser semelhantes aos de seu agente de iteração de valor, especialmente ao longo de caminhos bastante percorridos. No entanto, seus retornos médios serão menores do que os previstos pelos valores-Q por causa das ações aleatórias e da fase inicial de aprendizagem.
 
-You can choose an element from a list uniformly at random by calling the `random.choice` function. You can simulate a binary variable with probability `p` of success by using `util.flipCoin(p)`, which returns `True` with probability `p` and `False` with probability `1-p`.
+Você pode escolher um elemento de uma lista de maneira uniformemente aleatória chamando a função `random.choice`. Você pode simular uma variável binária com probabilidade `p` de sucesso usando` util.flipCoin(p) `, que retorna` True` com probabilidade `p` e` False` com probabilidade `1-p`. 
 
-To test your implementation, run the autograder:
+Para testar sua implementação, execute o autograder:
 
 `python autograder.py -q q5`
 
-With no additional code, you should now be able to run a Q-learning crawler robot:
+Sem nenhum código adicional, agora você deve ser capaz de executar um robô rastejador (crawler) com Q-learning: 
 
 `python crawler.py`
 
-If this doesn't work, you've probably written some code too specific to the `GridWorld` problem and you should make it more general to all MDPs.
+Se isso não funcionar, você provavelmente escreveu algum código muito específico para o problema `GridWorld` e deve torná-lo mais geral para todos os MDPs.
 
-This will invoke the crawling robot from class using your Q-learner. Play around with the various learning parameters to see how they affect the agent's policies and actions. Note that the step delay is a parameter of the simulation, whereas the learning rate and epsilon are parameters of your learning algorithm, and the discount factor is a property of the environment.
+Isso invocará o robô rastejante usando seu Q-learner. Experimente os vários parâmetros de aprendizagem para ver como eles afetam as políticas e ações do agente. Observe que o delay é um parâmetro da simulação, enquanto a taxa de aprendizado e o epsilon são parâmetros de seu algoritmo de aprendizado e o fator de desconto é uma propriedade do ambiente. 
 
 
 
-# Question 6: Bridge Crossing Revisited
+# Questão 6: Revisitando a Travessia de Ponte
 
-First, train a completely random Q-learner with the default learning rate on the noiseless BridgeGrid for 50 episodes and observe whether it finds the optimal policy.
+Primeiro, treine um Q-learner completamente aleatório com a taxa de aprendizado padrão no `BridgeGrid` sem ruído por 50 episódios e observe se ele encontra a política ótima. 
 
 `python gridworld.py -a q -k 50 -n 0 -g BridgeGrid -e 1`
 
-Now try the same experiment with an epsilon of 0. Is there an epsilon and a learning rate for which it is highly likely (greater than 99%) that the optimal policy will be learned after 50 iterations? `question6()` in `analysis.py` should return EITHER a 2-item tuple of `(epsilon, learning rate)` OR the string `'NOT POSSIBLE'` if there is none. Epsilon is controlled by `-e`, learning rate by `-l`.
+Agora tente o mesmo experimento com um epsilon de 0. Existe um epsilon e uma taxa de aprendizado para os quais é altamente provável (maior que 99%) que a política ótima seja aprendida após 50 iterações? `question6 ()` em `analysis.py` deve retornar OU uma tupla de 2 itens de` (epsilon, taxa de aprendizagem)` OU a string `'NOT POSSIBLE'` se não houver nenhuma. Epsilon é controlado por `-e`, a taxa de aprendizagem por` -l`. 
 
-*Note:* Your response should be not depend on the exact tie-breaking mechanism used to choose actions. This means your answer should be correct even if for instance we rotated the entire bridge grid world 90 degrees.
+*Observação:* Sua resposta não deve depender do mecanismo exato de desempate usado para escolher as ações. Isso significa que sua resposta deve estar correta, mesmo se, por exemplo, girarmos todo o mundo da ponte em 90 graus.
 
-To grade your answer, run the autograder:
+Para avaliar sua resposta, execute o autograder: 
 
 `python autograder.py -q q6`
 
 
-# Question 7: Q-Learning and Pacman
+# Questão 7: Q-Learning e Pacman
 
-Time to play some Pacman! Pacman will play games in two phases. In the first phase, *training*, Pacman will begin to learn about the values of positions and actions. Because it takes a very long time to learn accurate Q-values even for tiny grids, Pacman's training games run in quiet mode by default, with no GUI (or console) display. Once Pacman's training is complete, he will enter *testing* mode. When testing, Pacman's `self.epsilon` and `self.alpha` will be set to 0.0, effectively stopping Q-learning and disabling exploration, in order to allow Pacman to exploit his learned policy. Test games are shown in the GUI by default. Without any code changes you should be able to run Q-learning Pacman for very tiny grids as follows:
+É hora de jogar Pacman! O Pacman vai jogar em duas fases. Na primeira fase, *treinamento*, Pacman começará a aprender sobre os valores das posições e ações. Como leva muito tempo para aprender valores-Q precisos, mesmo para grids minúsculos, os jogos de treinamento do Pacman são executados em modo silencioso por padrão, sem display GUI (ou console). Assim que o treinamento de Pacman for concluído, ele entrará no modo de *teste*. Durante o teste, `self.epsilon` e` self.alpha` do Pacman serão ajustados para 0.0, efetivamente interrompendo o Q-learning e desabilitando a exploração, a fim de permitir que Pacman tire proveito de sua política aprendida. Os jogos de teste são mostrados na GUI por padrão. Sem quaisquer alterações de código, você deve ser capaz de executar o Pacman Q-learning para grids muito pequenos, como a seguir: 
 
 `python pacman.py -p PacmanQAgent -x 2000 -n 2010 -l smallGrid `
 
-Note that `PacmanQAgent` is already defined for you in terms of the `QLearningAgent` you've already written. `PacmanQAgent` is only different in that it has default learning parameters that are more effective for the Pacman problem (`epsilon=0.05, alpha=0.2, gamma=0.8`). You will receive full credit for this question if the command above works without exceptions and your agent wins at least 80% of the time. The autograder will run 100 test games after the 2000 training games.
+Observe que `PacmanQAgent` já está definido para você em termos do` QLearningAgent` que você já escreveu. `PacmanQAgent` só é diferente por ter parâmetros de aprendizagem padrão que são mais eficazes para o problema Pacman (`epsilon = 0.05, alpha = 0.2, gamma = 0.8`). Você receberá crédito total por esta questão se o comando acima funcionar sem exceções e seu agente vencer pelo menos 80% das vezes. O autograder executará 100 jogos de teste após os 2.000 jogos de treinamento.
 
-*Hint:* If your `QLearningAgent` works for `gridworld.py` and `crawler.py` but does not seem to be learning a good policy for Pacman on `smallGrid`, it may be because your `getAction` and/or `computeActionFromQValues` methods do not in some cases properly consider unseen actions. In particular, because unseen actions have by definition a Q-value of zero, if all of the actions that *have* been seen have negative Q-values, an unseen action may be optimal. Beware of the argmax function from util.Counter!
+* Dica: * Se seu `QLearningAgent` funciona para` gridworld.py` e `crawler.py`, mas não parece estar aprendendo uma boa política para Pacman em` smallGrid`, pode ser porque seu `getAction` e / ou Os métodos `computeActionFromQValues` não consideram adequadamente, em alguns casos, ações não vistas. Em particular, porque ações não-vistas têm por definição um valor-Q de zero, se todas as ações que *foram* vistas têm valores Q negativos, uma ação não-vista pode ser ótima. Cuidado com a função argmax do `util.Counter`!
 
-*Note:* To grade your answer, run:
+*Observação:* Para avaliar sua resposta, execute: 
 
 `python autograder.py -q q7`
 
-*Note:* If you want to experiment with learning parameters, you can use the option `-a`, for example `-a epsilon=0.1,alpha=0.3,gamma=0.7`. These values will then be accessible as `self.epsilon, self.gamma` and `self.alpha` inside the agent.
+*Nota:* Se você quiser experimentar os parâmetros de aprendizagem, você pode usar a opção `-a`, por exemplo` -a epsilon=0.1,alpha=0.3,gamma=0.7`. Esses valores ficarão acessíveis como `self.epsilon, self.gamma` e` self.alpha` dentro do agente.
 
-*Note:* While a total of 2010 games will be played, the first 2000 games will not be displayed because of the option `-x 2000`, which designates the first 2000 games for training (no output). Thus, you will only see Pacman play the last 10 of these games. The number of training games is also passed to your agent as the option `numTraining`.
+*Nota:* Embora um total de 2010 jogos sejam jogados, os primeiros 2.000 jogos não serão exibidos por causa da opção `-x 2000`, que designa os primeiros 2.000 jogos para treinamento (sem saída). Portanto, você só verá o Pacman jogar os últimos 10 desses jogos. O número de jogos de treinamento também é passado ao seu agente como a opção `numTraining`.
 
-*Note:* If you want to watch 10 training games to see what's going on, use the command:
+*Nota:* Se você quiser assistir a 10 jogos de treinamento para ver o que está acontecendo, use o comando: 
 
 `python pacman.py -p PacmanQAgent -n 10 -l smallGrid -a numTraining=10`
 
