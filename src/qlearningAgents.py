@@ -67,14 +67,14 @@ class QLearningAgent(ReinforcementAgent):
           terminal state, you should return a value of 0.0.
         """
         #acha a melhor ação a ser tomada no estado atual
-        best_action = self.getPolicy(state) #método pronto que chama self.computeActionFromQValues()
+        best_action = self.getPolicy(state)
 
         if(best_action == None):
-          max_action_q =  0.0
+          max_action =  0.0
         else:
-          max_action_q = self.getQValue(state, best_action)
+          max_action = self.getQValue(state, best_action)
         
-        return max_action_q
+        return max_action
 
     def computeActionFromQValues(self, state):
         """
@@ -86,11 +86,11 @@ class QLearningAgent(ReinforcementAgent):
         if legal_actions == []:
           best_action = None
         else:
-          #inicializa com os valores utilizando a primeira ação legal
+          #inicializa as variáveis com os valores da primeira ação legal
           best_action = legal_actions[0]
           max_q = self.getQValue(state,best_action)
 
-          for i in range(1,len(legal_actions)): #pula a primeira ação, pois foi utilizada na inicialização dos valores
+          for i in range(1,len(legal_actions)): #pula a primeira ação legal, pois foi utilizada na inicialização das variáveis
             action = legal_actions[i]
             q_value = self.getQValue(state,action)
 
@@ -102,7 +102,7 @@ class QLearningAgent(ReinforcementAgent):
               best_action = random.choice([action,best_action])
 
         return best_action
-
+      
     def getAction(self, state):
         """
           Compute the action to take in the current state.  With
@@ -118,7 +118,11 @@ class QLearningAgent(ReinforcementAgent):
         legalActions = list(self.getLegalActions(state))
         action = None
         
-        # if legalActions != []:
+        if legalActions != []:
+          if util.flipCoin(self.epsilon) == True: #ação randomica
+            action = random.choice(legalActions)
+          else: #melhor ação
+            action = self.getPolicy(state)
 
         return action
 
@@ -131,8 +135,7 @@ class QLearningAgent(ReinforcementAgent):
           NOTE: You should never call this function,
           it will be called on your behalf
         """
-        new_q_value = ((1-self.alpha)*self.getQValue(state,action)) + self.alpha*(reward + (self.discount*self.getValue(nextState)))
-        self.q[state][action] = new_q_value
+        self.q[state][action] = ((1-self.alpha)*self.getQValue(state,action)) + self.alpha*(reward + (self.discount*self.getValue(nextState)))
 
     def getPolicy(self, state):
         return self.computeActionFromQValues(state)
